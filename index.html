@@ -8,83 +8,118 @@
     <link rel="stylesheet" href="assets/css/style.css">
   </head>
   <body>
-    <header class="site-header" role="banner">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">⌘</div>
-        <div class="titles">
-          <h1>Code Library</h1>
-          <p class="sub">python · 114-2資料科學</p>
-        </div>
-      </div>
-
-      <label class="search-wrap" aria-label="搜尋程式碼">
-        <input id="searchBox" type="search" placeholder="搜尋標題 / 說明 / 標籤 / 程式碼…" spellcheck="false" />
-        <button id="clearSearch" title="清除搜尋" type="button" aria-label="清除搜尋">✕</button>
-      </label>
-    </header>
-
-    <main class="layout">
-      <aside class="sidebar" id="sidebar">
-        <div class="side-head">
-          <span class="side-title">類別</span>
-          <button id="toggleSidebar" class="only-mobile" title="收合側欄" aria-expanded="true" aria-controls="categoryList">☰</button>
-        </div>
-        <nav id="categoryList" class="cat-list" aria-label="類別清單">
-          <!-- filled by app.js -->
-        </nav>
-        <div class="side-foot">
-          <button id="resetFilters" class="ghost" type="button">重置篩選</button>
-        </div>
-      </aside>
-
-      <section class="content" aria-live="polite">
-        <div class="toolbar">
-          <div class="count"><span id="resultCount">0</span> 個項目</div>
-          <div class="sort">
-            <label for="sortSelect">排序</label>
-            <select id="sortSelect">
-              <option value="updated_desc">更新時間（新→舊）</option>
-              <option value="title_asc">標題（A→Z）</option>
-              <option value="title_desc">標題（Z→A）</option>
-            </select>
+    <div class="page-shell">
+      <header class="site-header" role="banner">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">{ }</div>
+          <div class="titles">
+            <h1>Code Library</h1>
+            <p class="sub">Python · 114-2資料科學</p>
           </div>
         </div>
 
-        <div id="grid" class="grid" role="list">
-          <!-- filled by app.js -->
-        </div>
-      </section>
-    </main>
+        <label class="search-wrap" aria-label="搜尋程式碼">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input id="searchBox" type="search" placeholder="搜尋標題 / 說明 / 標籤 / 程式碼 / 語言…" spellcheck="false" />
+          <button id="clearSearch" title="清除搜尋" type="button" aria-label="清除搜尋">清除</button>
+        </label>
+      </header>
 
-    <div id="modal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-head">
-          <div class="modal-title">
-            <span id="modalId" class="code-id" aria-label="編號">CAT-000</span>
-            <h2 id="modalTitle">標題</h2>
+      <main class="layout">
+        <aside class="sidebar" id="sidebar">
+          <div class="side-head">
+            <span class="side-title">類別導覽</span>
+            <button id="toggleSidebar" class="only-mobile icon square" title="收合側欄" aria-expanded="true" aria-controls="categoryList">☰</button>
           </div>
-          <button id="modalClose" class="icon" aria-label="關閉">✕</button>
+
+          <section class="panel side-panel library-summary" aria-label="程式庫摘要">
+            <div class="summary-row">
+              <span class="summary-label">總項目</span>
+              <strong id="summaryTotal">0</strong>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">目前語言</span>
+              <strong id="summaryLanguage">Python</strong>
+            </div>
+          </section>
+
+          <nav id="categoryList" class="cat-list panel" aria-label="類別清單">
+            <!-- filled by app.js -->
+          </nav>
+          <div class="side-foot">
+            <button id="resetFilters" class="ghost square" type="button">重置篩選</button>
+          </div>
+        </aside>
+
+        <section class="content" aria-live="polite">
+<!--
+          <section class="hero panel" aria-label="程式庫資訊">
+            <div>
+              <p class="eyebrow">Structured Code Archive</p>
+              <h2>保留原有搜尋、分類、複製、下載與檢視功能，並擴充為支援 Python。</h2>
+              <p class="hero-copy">介面改為偏北歐／無印良品風格的灰白系質感版面，背景固定不會因捲動產生斷層；按鈕、卡片與彈窗加入更細緻的留白、線條與微動畫。</p>
+            </div>
+            <div class="hero-meta">
+              <span class="hero-chip">Nordic Minimal</span>
+              <span class="hero-chip">Fixed Background</span>
+              <span class="hero-chip">Soft Motion</span>
+              <span class="hero-chip">Python Ready</span>
+            </div>
+          </section>
+-->
+          <div class="toolbar panel compact">
+            <div class="count"><span id="resultCount">0</span> 個項目</div>
+            <div class="sort">
+              <label for="sortSelect">排序</label>
+              <select id="sortSelect">
+                <option value="updated_desc">更新時間（新→舊）</option>
+                <option value="title_asc">標題（A→Z）</option>
+                <option value="title_desc">標題（Z→A）</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="grid" class="grid" role="list">
+            <!-- filled by app.js -->
+          </div>
+        </section>
+      </main>
+
+      <div id="modal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
+        <div class="modal-dialog panel" role="document">
+          <div class="modal-head">
+            <div class="modal-title">
+              <span id="modalId" class="code-id" aria-label="編號">CAT-000</span>
+              <div>
+                <h2 id="modalTitle">標題</h2>
+                <div class="modal-langline">
+                  <span id="modalLanguage" class="chip chip-lang"></span>
+                </div>
+              </div>
+            </div>
+            <button id="modalClose" class="icon square" aria-label="關閉">✕</button>
+          </div>
+          <div class="modal-meta">
+            <span id="modalCategory" class="chip"></span>
+            <span id="modalUpdated" class="muted"></span>
+            <div id="modalTags" class="tags"></div>
+          </div>
+          <p id="modalDesc" class="desc"></p>
+          <div class="modal-actions">
+            <button id="btnCopy" class="primary square">複製程式碼</button>
+            <button id="btnDownload" class="ghost square">下載檔案</button>
+          </div>
+          <pre id="modalPre"><code id="modalCode" class="codeblock" aria-label="程式碼內容"></code></pre>
         </div>
-        <div class="modal-meta">
-          <span id="modalCategory" class="chip"></span>
-          <span id="modalUpdated" class="muted"></span>
-          <div id="modalTags" class="tags"></div>
-        </div>
-        <p id="modalDesc" class="desc"></p>
-        <div class="modal-actions">
-          <button id="btnCopy" class="primary">複製程式碼</button>
-          <button id="btnDownload" class="ghost">下載 .py</button>
-        </div>
-        <pre id="modalPre"><code id="modalCode" class="codeblock" aria-label="程式碼內容"></code></pre>
+        <div class="modal-backdrop"></div>
       </div>
-      <div class="modal-backdrop"></div>
+
+      <footer class="site-foot">
+        <span>Copyright © 2026 rkgrbg.</span>
+      </footer>
     </div>
 
-    <footer class="site-foot">
-      <span>Copyright © 2026 rkgrbg.</span>
-    </footer>
-
-    <script src="data/codes.js"></script>
+    <script src="data/codes-260306001.js"></script>
     <script src="assets/js/app.js"></script>
   </body>
 </html>

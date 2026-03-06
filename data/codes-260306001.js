@@ -1,4 +1,5 @@
-window.CPP_CODE_DATA = {
+window.CODE_LIBRARY_DATA = {
+  defaultLanguage: "Python",
   categories: [
     { id: "ckzj", name: "基礎語法(CKZJ)" }
   ],
@@ -10,8 +11,7 @@ window.CPP_CODE_DATA = {
       updated: "2026-03-06",
       tags: ["基礎"],
       code:
-`
-print("Hello, World!")
+`print("Hello, World!")
 print("Hello, Python!")
 `
     },{
@@ -21,8 +21,7 @@ print("Hello, Python!")
       updated: "2026-03-06",
       tags: ["基礎"],
       code:
-`
-d = float(input())
+`d = float(input())
 print(24.0*(d/360.0))
 `
     },{
@@ -32,8 +31,7 @@ print(24.0*(d/360.0))
       updated: "2026-03-06",
       tags: ["基礎"],
       code:
-`
-h = int(input())
+`h = int(input())
 print(h*(30 if h<= 2 else (40 if h <= 5 else 50)))
 `
     },{
@@ -43,8 +41,7 @@ print(h*(30 if h<= 2 else (40 if h <= 5 else 50)))
       updated: "2026-03-06",
       tags: ["基礎"],
       code:
-`
-p = int(input())
+`p = int(input())
 m = float(input())
 
 if(p==199):
@@ -61,8 +58,7 @@ else:
       updated: "2026-03-06",
       tags: ["基礎"],
       code:
-`
-n = int(input())
+`n = int(input())
 
 for i in range(n) :
     print(i+1)
@@ -74,8 +70,7 @@ for i in range(n) :
       updated: "2026-03-06",
       tags: ["基礎"],
       code:
-`
-n = int(input())
+`n = int(input())
 
 for i in range(n) :
     print(3*(i+1))
@@ -87,8 +82,7 @@ for i in range(n) :
       updated: "2026-03-06",
       tags: ["基礎"],
       code:
-`
-n = int(input())
+`n = int(input())
 
 ans = 0
 for i in range(n) :
@@ -102,8 +96,7 @@ for i in range(n) :
       updated: "2026-03-06",
       tags: ["基礎"],
       code:
-`
-n = int(input())
+`n = int(input())
 
 ans = 0
 
@@ -119,8 +112,7 @@ print(int(abs(((1+n)*n/2)**2 - ans)))
       updated: "2026-03-06",
       tags: ["基礎"],
       code:
-`
-a = int(input())
+`a = int(input())
 b = int(input())
 ans = 0
 
@@ -130,6 +122,7 @@ for i in range(min(a, b), max(a, b)+1) :
         
 print(ans)
 `
-    },
+    }
   ]
 };
+window.CPP_CODE_DATA = window.CODE_LIBRARY_DATA;

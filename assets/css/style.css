@@ -1,0 +1,166 @@
+/* === Macaron Pastel Theme (Light) === */
+:root{
+  --bg:#faf9fd;
+  --panel:#ffffff;
+  --text:#2b2f3a;
+  --muted:#606775;
+  --line:#e8e7f3;
+
+  --p1:#ffd8e2;  --p2:#d8f7ee;  --p3:#e8e5ff;  --p4:#ffe7cc;  --p5:#dff1ff;
+
+  --accent:#7a89ff;
+  --shadow: 0 10px 24px rgba(22,25,40,.08);
+  --radius:16px; --radius-sm:12px; --radius-lg:20px;
+}
+
+*{ box-sizing:border-box }
+html, body{ height:100% }
+body{
+  margin:0; color:var(--text); background:
+    radial-gradient(800px 600px at 15% 0%, var(--p5), transparent 60%),
+    radial-gradient(900px 700px at 95% 10%, var(--p2), transparent 60%),
+    radial-gradient(700px 500px at 50% 100%, var(--p1), transparent 60%),
+    var(--bg);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  line-height:1.6;
+}
+
+.site-header{
+  position: sticky; top:0; z-index:50;
+  display:flex; justify-content:space-between; align-items:center; gap:16px;
+  padding:16px clamp(16px, 4vw, 28px);
+  border-bottom:1px solid var(--line);
+  backdrop-filter: blur(10px);
+  background: color-mix(in oklab, white 70%, var(--p5) 30%);
+}
+.brand{ display:flex; align-items:center; gap:12px }
+.logo{
+  width:28px; height:28px; border-radius:10px; display:grid; place-items:center;
+  background: linear-gradient(135deg, var(--p3), var(--p1));
+  box-shadow: var(--shadow);
+  font-weight:700; color:#3a3a55;
+}
+.brand h1{ margin:0; font-size:clamp(20px, 3.5vmin, 26px); letter-spacing:.08em }
+.brand .sub{ margin:0; font-size:12px; color:var(--muted); letter-spacing:.12em }
+
+.search-wrap{
+  display:flex; gap:8px; align-items:center;
+  background: var(--panel);
+  border:1px solid var(--line);
+  border-radius:999px; padding:8px 10px 8px 16px;
+  width:min(680px, 60vw);
+  box-shadow: var(--shadow);
+}
+.search-wrap input{ flex:1; border:0; outline:0; background:transparent; color:var(--text); font-size:16px; letter-spacing:.02em }
+.search-wrap button{
+  appearance:none; border:0; background:linear-gradient(135deg, var(--p2), var(--p5));
+  color:#2d3a46; cursor:pointer; font-size:14px; padding:6px 10px; border-radius:999px; border:1px solid var(--line);
+}
+.search-wrap button:hover{ filter:brightness(1.03) }
+
+.layout{ display:grid; grid-template-columns: 260px 1fr; gap:0 }
+.sidebar{
+  border-right:1px solid var(--line);
+  min-height:calc(100dvh - 74px);
+  position:sticky; top:74px; padding:18px 14px;
+  background: color-mix(in oklab, white 70%, var(--p3) 30%);
+}
+.side-head{ display:flex; justify-content:space-between; align-items:center; padding:0 6px 8px; border-bottom:1px dashed var(--line); margin-bottom:10px }
+.only-mobile{ display:none }
+.side-title{ font-weight:700; letter-spacing:.1em; color:#3f4b57 }
+.cat-list{ display:flex; flex-direction:column; gap:8px; padding:8px 2px }
+.cat-item{
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  padding:10px 12px; border-radius:14px; cursor:pointer;
+  border:1px solid var(--line); background: var(--panel);
+  transition: transform .05s ease;
+}
+.cat-item:hover{ transform: translateY(-1px); box-shadow: var(--shadow) }
+.cat-item.active{ background: linear-gradient(135deg, var(--p4), var(--p1)); border-color: color-mix(in oklab, var(--p4), var(--p1) 60%) }
+.cat-item .name{ letter-spacing:.06em; font-weight:600 }
+.cat-item .count{ font-variant-numeric: tabular-nums; color:var(--muted) }
+
+.side-foot{ margin-top:10px; padding:6px }
+.ghost{ background: var(--panel); color:var(--text); border:1px solid var(--line); border-radius:12px; padding:8px 12px; cursor:pointer; box-shadow: var(--shadow) }
+.ghost:hover{ filter:brightness(1.02) }
+
+.content{ padding:18px clamp(12px, 3vw, 24px) }
+.toolbar{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin:6px 0 16px }
+.count{ color:#4b5563 } .sort{ display:flex; align-items:center; gap:8px; color:#4b5563 }
+select{ background: var(--panel); border:1px solid var(--line); color:var(--text); padding:8px 10px; border-radius:12px; box-shadow: var(--shadow) }
+
+.grid{ display:grid; grid-template-columns: repeat( auto-fill, minmax(300px, 1fr) ); gap:18px }
+.card{
+  background: var(--panel); border:1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding:16px; display:flex; flex-direction:column; gap:10px; min-height: 180px;
+}
+.card .top{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px }
+.code-id{ font-weight:800; color:#3f4b57; letter-spacing:.12em; font-variant-numeric: tabular-nums }
+.title{ margin: 2px 0 0; font-size: clamp(16px, 2.6vmin, 20px) }
+.desc{ margin: 0; color:#444e5a }
+.tags{ display:flex; gap:6px; flex-wrap:wrap } .chip{ font-size: 12px; color:#334155; background: linear-gradient(135deg, var(--p5), var(--p2)); border:1px solid var(--line); padding:4px 8px; border-radius:999px }
+.muted{ color:#6b7280 }
+.actions{ display:flex; gap:8px; flex-wrap:wrap; margin-top:auto }
+button.primary{
+  border:0; padding:10px 14px; border-radius:12px; background:linear-gradient(135deg, var(--p3), var(--p5));
+  color:#2f3746; cursor:pointer; box-shadow: var(--shadow); border:1px solid var(--line); font-weight:700;
+}
+button.primary:hover{ filter:brightness(1.03) }
+button.icon{ border:1px solid var(--line); background: var(--panel); padding:8px 12px; border-radius:10px; cursor:pointer; box-shadow: var(--shadow) }
+button.icon:hover{ filter:brightness(1.02) }
+
+pre{ margin:0 }
+.codeblock{
+  display:block; white-space:pre; overflow:auto; padding:14px; border:1px solid var(--line);
+  border-radius: var(--radius-sm); background: #f5f7ff; line-height:1.55;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", "Noto Sans Mono", monospace;
+  font-size: 14px; color:#0f172a;
+}
+
+/* Modal */
+.modal.hidden{ display:none }
+.modal{ position:fixed; inset:0; z-index:100 }
+.modal-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.25) }
+.modal-dialog{
+  position:relative; z-index:101; max-width: 980px; margin: 7vh auto; background: var(--panel);
+  border:1px solid var(--line); border-radius: var(--radius-lg); padding: 16px;
+  box-shadow: var(--shadow);
+}
+.modal-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; padding-bottom:8px; border-bottom:1px dashed var(--line) }
+.modal-title{ display:flex; gap:10px; align-items:center } .modal-title h2{ margin:0 }
+.modal-meta{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:10px 0 }
+.modal-actions{ display:flex; gap:8px; padding:8px 0 }
+
+.site-foot{ text-align:center; color:#6b7280; padding:18px; border-top:1px solid var(--line); margin-top:16px }
+
+@media (max-width: 880px){
+  .layout{ grid-template-columns: 1fr }
+  .sidebar{ position:static; min-height: initial; border-right:0; border-bottom:1px solid var(--line) }
+  .only-mobile{ display:inline-flex }
+  .cat-list{ display:grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap:8px }
+}
+
+/* Syntax tokens */
+.codeblock { background: #f5f7ff; color:#0f172a }
+.tok-kw{ color:#6c5ce7; font-weight:700 } .tok-type{ color:#0ea5e9; font-weight:600 }
+.tok-str{ color:#10b981 } .tok-char{ color:#14b8a6 } .tok-num{ color:#f97316 }
+.tok-pp{ color:#e11d48; font-weight:700 } .tok-comm{ color:#94a3b8; font-style:italic }
+
+/* --- Scroll fix for long code blocks --- */
+.modal-dialog{ max-height: min(88vh, 100dvh - 6vh); overflow:auto; overscroll-behavior: contain }
+#modalPre{ max-height: clamp(260px, 62vh, 860px); overflow:auto; -webkit-overflow-scrolling:touch }
+.codeblock{ white-space:pre; overflow:auto }
+
+/* --- Tag as interactive filter --- */
+.chip.tag{ cursor:pointer; user-select:none }
+.chip.tag:hover{ filter:brightness(1.05); box-shadow: var(--shadow) }
+
+/* --- Toast notifications --- */
+.toast-wrap{ position: fixed; inset:auto 16px 16px auto; z-index: 9999; display:flex; flex-direction:column; gap:8px; align-items:flex-end }
+.toast{ background:#1f2937; color:#f9fafb; border-radius:12px; padding:10px 12px; box-shadow: var(--shadow); border:1px solid rgba(255,255,255,.12); font-size:14px; opacity:0; transform:translateY(10px); transition:all .18s ease }
+.toast.show{ opacity:1; transform:translateY(0) }
+
+/* --- Button press feedback --- */
+@keyframes press-pop{ 0%{transform:scale(1)} 50%{transform:scale(.985)} 100%{transform:scale(1)} }
+.btn-press{ animation: press-pop 120ms ease-out }

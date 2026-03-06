@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Code Library · rkgrbg</title>
+    <meta name="color-scheme" content="light">
+    <link rel="stylesheet" href="assets/css/style.css">
+  </head>
+  <body>
+    <header class="site-header" role="banner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">⌘</div>
+        <div class="titles">
+          <h1>Code Library</h1>
+          <p class="sub">python · 114-2資料科學</p>
+        </div>
+      </div>
+
+      <label class="search-wrap" aria-label="搜尋程式碼">
+        <input id="searchBox" type="search" placeholder="搜尋標題 / 說明 / 標籤 / 程式碼…" spellcheck="false" />
+        <button id="clearSearch" title="清除搜尋" type="button" aria-label="清除搜尋">✕</button>
+      </label>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar" id="sidebar">
+        <div class="side-head">
+          <span class="side-title">類別</span>
+          <button id="toggleSidebar" class="only-mobile" title="收合側欄" aria-expanded="true" aria-controls="categoryList">☰</button>
+        </div>
+        <nav id="categoryList" class="cat-list" aria-label="類別清單">
+          <!-- filled by app.js -->
+        </nav>
+        <div class="side-foot">
+          <button id="resetFilters" class="ghost" type="button">重置篩選</button>
+        </div>
+      </aside>
+
+      <section class="content" aria-live="polite">
+        <div class="toolbar">
+          <div class="count"><span id="resultCount">0</span> 個項目</div>
+          <div class="sort">
+            <label for="sortSelect">排序</label>
+            <select id="sortSelect">
+              <option value="updated_desc">更新時間（新→舊）</option>
+              <option value="title_asc">標題（A→Z）</option>
+              <option value="title_desc">標題（Z→A）</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="grid" class="grid" role="list">
+          <!-- filled by app.js -->
+        </div>
+      </section>
+    </main>
+
+    <div id="modal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-head">
+          <div class="modal-title">
+            <span id="modalId" class="code-id" aria-label="編號">CAT-000</span>
+            <h2 id="modalTitle">標題</h2>
+          </div>
+          <button id="modalClose" class="icon" aria-label="關閉">✕</button>
+        </div>
+        <div class="modal-meta">
+          <span id="modalCategory" class="chip"></span>
+          <span id="modalUpdated" class="muted"></span>
+          <div id="modalTags" class="tags"></div>
+        </div>
+        <p id="modalDesc" class="desc"></p>
+        <div class="modal-actions">
+          <button id="btnCopy" class="primary">複製程式碼</button>
+          <button id="btnDownload" class="ghost">下載 .py</button>
+        </div>
+        <pre id="modalPre"><code id="modalCode" class="codeblock" aria-label="程式碼內容"></code></pre>
+      </div>
+      <div class="modal-backdrop"></div>
+    </div>
+
+    <footer class="site-foot">
+      <span>Copyright © 2026 rkgrbg.</span>
+    </footer>
+
+    <script src="data/codes.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
+</html>

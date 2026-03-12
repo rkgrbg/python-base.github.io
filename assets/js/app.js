@@ -1,4 +1,4 @@
-/* Code Library — Python/C++ ready, nordic minimal UI */
+/* Code Library — UI refreshed for desktop/mobile without changing core features */
 (function(){
   'use strict';
 
@@ -125,9 +125,13 @@
     return highlightCpp(src || '');
   }
 
-  function languageLabel(item){
-    return item.language || data.defaultLanguage || 'Python';
+  function renderCodeWithLineNumbers(src, lang){
+    const lines = String(src || '').split('\n');
+    if(!lines.length) lines.push('');
+    return `<span class="code-lines">${lines.map((line, idx)=>`<span class="code-line"><span class="line-no">${idx+1}</span><span class="line-content">${highlightCode(line, lang) || '&nbsp;'}</span></span>`).join('')}</span>`;
   }
+
+  function languageLabel(item){ return item.language || data.defaultLanguage || 'Python'; }
 
   function fileExtension(item){
     const lang = languageLabel(item).toLowerCase();
@@ -147,6 +151,7 @@
     }
     return el;
   }
+
   function showToast(msg){
     const wrap = ensureToastWrap();
     const t = document.createElement('div');
@@ -156,6 +161,7 @@
     requestAnimationFrame(()=> t.classList.add('show'));
     setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=> t.remove(), 200); }, 1600);
   }
+
   function pressFeedback(el){
     if(!el) return;
     el.classList.remove('btn-press'); void el.offsetWidth; el.classList.add('btn-press');
@@ -167,6 +173,15 @@
 
   function computeCategoryCounts(items){ const counts = {}; for(const item of items){ counts[item.category] = (counts[item.category]||0)+1; } return counts; }
   function idPrefix(catId){ return (catId || 'CAT').toUpperCase(); }
+  function isMobile(){ return window.matchMedia('(max-width: 760px)').matches; }
+
+  function syncSidebarState(forceOpen){
+    const sidebar = document.getElementById('sidebar');
+    const btn = document.getElementById('toggleSidebar');
+    const opened = typeof forceOpen === 'boolean' ? forceOpen : sidebar.classList.contains('open');
+    sidebar.classList.toggle('open', opened);
+    if(btn) btn.setAttribute('aria-expanded', opened ? 'true' : 'false');
+  }
 
   function autoNumber(){
     const byCat = {};
@@ -174,7 +189,7 @@
     const lookup = new Map();
     for(const [cat, arr] of Object.entries(byCat)){
       arr.sort((a,b)=> (a.title||'').localeCompare(b.title||''));
-      arr.forEach((it, idx)=> lookup.set(it._id, idPrefix(cat)+'-'+String(idx+1).padStart(3,'0')) );
+      arr.forEach((it, idx)=> lookup.set(it._id, idPrefix(cat)+'-'+String(idx+1).padStart(3,'0')));
     }
     return lookup;
   }
@@ -202,28 +217,72 @@
     return items;
   }
 
+  function filterByTag(tag){
+    const t = tag || '';
+    const sb = document.getElementById('searchBox');
+    sb.value = t;
+    state.q = t;
+    update();
+    if(isMobile()) syncSidebarState(false);
+    showToast('以標籤搜尋：' + t);
+  }
+
   function renderCategories(){
     const list = document.getElementById('categoryList');
     list.innerHTML = '';
     const counts = computeCategoryCounts(data.items);
 
-    const allBtn = document.createElement('div');
-    allBtn.className = 'cat-item' + (state.category==='all' ? ' active':'');
-    allBtn.innerHTML = `<span class="name">全部</span><span class="count">${data.items.length}</span>`;
-    allBtn.addEventListener('click', ()=>{ state.category='all'; update(); });
-    list.appendChild(allBtn);
+    const options = [{ id:'all', name:'全部', count:data.items.length }].concat(
+      data.categories.map(cat => ({ id:cat.id, name:cat.name, count:counts[cat.id]||0 }))
+    );
 
-    for(const cat of data.categories){
+    for(const option of options){
       const c = document.createElement('div');
-      c.className = 'cat-item' + (state.category===cat.id ? ' active':'');
-      c.innerHTML = `<span class="name">${esc(cat.name)}</span><span class="count">${counts[cat.id]||0}</span>`;
-      c.addEventListener('click', ()=>{ state.category = cat.id; update(); });
+      c.className = 'cat-item' + (state.category===option.id ? ' active':'');
+      c.setAttribute('role', 'button');
+      c.setAttribute('tabindex', '0');
+      c.innerHTML = `<span class="name">${esc(option.name)}</span><span class="count">${option.count}</span>`;
+      const activate = ()=>{
+        state.category = option.id;
+        update();
+        if(isMobile()) syncSidebarState(false);
+      };
+      c.addEventListener('click', activate);
+      c.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); activate(); } });
       list.appendChild(c);
     }
   }
 
+  function fallbackCopyText(text){
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', 'readonly');
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    ta.style.pointerEvents = 'none';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try{
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    }catch(_){
+      document.body.removeChild(ta);
+      return false;
+    }
+  }
+
   function copyCode(item){
-    navigator.clipboard.writeText(item.code||'').then(()=> showToast('已複製到剪貼簿'));
+    const text = item.code || '';
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text)
+        .then(()=> showToast('已複製到剪貼簿'))
+        .catch(()=>{ if(fallbackCopyText(text)) showToast('已複製到剪貼簿'); else showToast('複製失敗，請手動複製'); });
+      return;
+    }
+    if(fallbackCopyText(text)) showToast('已複製到剪貼簿');
+    else showToast('複製失敗，請手動複製');
   }
 
   function inferFilename(item){
@@ -246,6 +305,7 @@
     const m = document.getElementById('modal');
     m.classList.add('hidden');
     m.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
   }
 
   function openModal(item, code, catObj){
@@ -257,22 +317,23 @@
     const mt = document.getElementById('modalTags');
     mt.innerHTML = (item.tags||[]).map(t=>`<span class="chip tag" data-role="tag" data-tag="${esc(t)}">${esc(t)}</span>`).join(' ');
     document.getElementById('modalDesc').textContent = item.description || '';
-    document.getElementById('modalCode').innerHTML = highlightCode(item.code || '', languageLabel(item));
+    document.getElementById('modalCode').innerHTML = renderCodeWithLineNumbers(item.code || '', languageLabel(item));
     document.getElementById('modalPre').scrollTop = 0;
     document.getElementById('modalPre').scrollLeft = 0;
 
     const modal = document.getElementById('modal');
     modal.classList.remove('hidden');
     modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
 
     document.getElementById('btnCopy').onclick = (e)=>{ pressFeedback(e.currentTarget); copyCode(item); };
     document.getElementById('btnDownload').onclick = (e)=>{ pressFeedback(e.currentTarget); downloadCode(item); };
 
     mt.querySelectorAll('[data-role="tag"]').forEach(tagEl=>{
       tagEl.addEventListener('click', ()=>{
-        const t = tagEl.getAttribute('data-tag') || '';
-        const sb = document.getElementById('searchBox');
-        sb.value = t; state.q = t; update(); closeModal(); pressFeedback(tagEl); showToast('以標籤搜尋：' + t);
+        filterByTag(tagEl.getAttribute('data-tag') || '');
+        closeModal();
+        pressFeedback(tagEl);
       });
     });
   }
@@ -283,8 +344,10 @@
     sortItems(filtered);
     const numbering = autoNumber();
     document.getElementById('resultCount').textContent = String(filtered.length);
-    document.getElementById('summaryTotal').textContent = String(data.items.length);
-    document.getElementById('summaryLanguage').textContent = data.defaultLanguage || 'Python';
+    const summaryTotal = document.getElementById('summaryTotal');
+    const summaryLanguage = document.getElementById('summaryLanguage');
+    if(summaryTotal) summaryTotal.textContent = String(data.items.length);
+    if(summaryLanguage) summaryLanguage.textContent = data.defaultLanguage || 'Python';
 
     const grid = document.getElementById('grid');
     grid.innerHTML = '';
@@ -316,23 +379,31 @@
           <div class="muted">副檔名：.${fileExtension(it)}</div>
         </div>
         <div class="actions">
-          <button class="primary square" data-role="view">檢視</button>
-          <button class="icon square" data-role="copy" title="複製">複製</button>
-          <button class="icon square" data-role="download" title="下載檔案">下載</button>
+          <button class="line-btn" data-role="view">檢視</button>
+          <button class="line-btn" data-role="copy" title="複製">複製</button>
+          <button class="line-btn" data-role="download" title="下載檔案">下載</button>
         </div>`;
 
       card.querySelector('[data-role="view"]').addEventListener('click', (e)=>{ pressFeedback(e.currentTarget); openModal(it, code, catObj); });
       card.querySelector('[data-role="copy"]').addEventListener('click', (e)=>{ pressFeedback(e.currentTarget); copyCode(it); });
       card.querySelector('[data-role="download"]').addEventListener('click', (e)=>{ pressFeedback(e.currentTarget); downloadCode(it); });
       card.querySelectorAll('[data-role="tag"]').forEach(tagEl=>{
-        tagEl.addEventListener('click', ()=>{
-          const t = tagEl.getAttribute('data-tag') || '';
-          const sb = document.getElementById('searchBox');
-          sb.value = t; state.q = t; update(); pressFeedback(tagEl); showToast('以標籤搜尋：' + t);
-        });
+        tagEl.addEventListener('click', ()=>{ pressFeedback(tagEl); filterByTag(tagEl.getAttribute('data-tag') || ''); });
       });
 
       grid.appendChild(card);
+    }
+
+    if(!filtered.length){
+      const empty = document.createElement('article');
+      empty.className = 'panel empty-state';
+      empty.innerHTML = `
+        <div style="display:grid;gap:8px;justify-items:start;">
+          <span class="chip chip-lang">No Result</span>
+          <h3>找不到符合條件的程式碼</h3>
+          <p class="desc">可以調整搜尋關鍵字、切換類別，或按下「重置篩選」恢復全部項目。</p>
+        </div>`;
+      grid.appendChild(empty);
     }
   }
 
@@ -363,12 +434,18 @@
     state.category='all'; state.q=''; state.sort='updated_desc';
     document.getElementById('searchBox').value=''; document.getElementById('sortSelect').value='updated_desc';
     renderCategories(); update();
+    if(isMobile()) syncSidebarState(false);
   });
-  document.getElementById('toggleSidebar').addEventListener('click', ()=>{ document.getElementById('sidebar').classList.toggle('open'); });
+  const toggleSidebarBtn = document.getElementById('toggleSidebar');
+  if(toggleSidebarBtn){
+    toggleSidebarBtn.addEventListener('click', ()=>{ syncSidebarState(!document.getElementById('sidebar').classList.contains('open')); });
+  }
   document.getElementById('modalClose').addEventListener('click', closeModal);
   document.getElementById('modal').addEventListener('click', (e)=>{ if(e.target.classList.contains('modal-backdrop')) closeModal(); });
   document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
+  window.addEventListener('resize', ()=>{ if(!isMobile()) syncSidebarState(false); });
 
   renderCategories();
+  syncSidebarState(false);
   update();
 })();

@@ -1,4 +1,3 @@
-/* Code Library — UI refreshed for desktop/mobile without changing core features */
 (function(){
   'use strict';
 

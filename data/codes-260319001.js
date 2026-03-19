@@ -167,6 +167,75 @@ for _ in range(n) :
       tags: ["基礎", "是奇蹟啊"],
       code:
 `print(input().translate(str.maketrans('.,', ',.')))`
+    },{
+      category: "ckzj",
+      title: "04陣列 01 最後倒數",
+      description: "這段程式碼很高冷，他沒有多說什麼...，只留下了一聲不屑的「哼」。",
+      updated: "2026-03-19",
+      tags: ["基礎"],
+      code:
+`n = int(input())
+l = [input() for _ in range(n)]
+
+for x in l[::-1] :
+    print(x)`
+    },{
+      category: "ckzj",
+      title: "04陣列 02 歐洲文化之都",
+      description: "這段程式碼很高冷，他沒有多說什麼...，只留下了一聲不屑的「哼」。",
+      updated: "2026-03-19",
+      tags: ["基礎"],
+      code:
+`n = int(input())
+
+for _ in range(n) :
+    print(input().split(',')[1].strip())`
+    },{
+      category: "ckzj",
+      title: "04陣列 03 志願選填",
+      description: "這段程式碼很高冷，他沒有多說什麼...，只留下了一聲不屑的「哼」。",
+      updated: "2026-03-19",
+      tags: ["基礎"],
+      code:
+`l = input().split()
+s = input().strip()
+
+print(l.index(s) + 1)`
+    },{
+      category: "ckzj",
+      title: "04陣列 04 商品製造日期轉換",
+      description: "這段程式碼很高冷，他沒有多說什麼...，只留下了一聲不屑的「哼」。",
+      updated: "2026-03-19",
+      tags: ["基礎"],
+      code:
+`m, d, y = map(int, input().split('/'))
+
+print(f"{y-1911}/{m:02d}/{d:02d}")`
+    },{
+      category: "ckzj",
+      title: "04陣列 05 死線之前",
+      description: "這段程式碼很高冷，他沒有多說什麼...，只留下了一聲不屑的「哼」。",
+      updated: "2026-03-19",
+      tags: ["基礎"],
+      code:
+`nh, nm = map(int, input().split(':'))
+th, tm = map(int,input().split(':'))
+
+if nm > tm :
+	print(f"{th-nh-1} Hour(s) {tm-nm+60} Minute(s)")
+else :
+	print(f"{th-nh} Hour(s) {tm-nm} Minute(s)")`
+    },{
+      category: "ckzj",
+      title: "04陣列 06 今彩 539 對獎器",
+      description: "這段程式碼很高冷，他沒有多說什麼...，只留下了一聲不屑的「哼」。",
+      updated: "2026-03-19",
+      tags: ["基礎", "是奇蹟啊"],
+      code:
+`s = set(map(int, input().split()))
+li = list(map(int, input().split()))
+
+print(sum(x in s for x in li))`
     }
   ]
 };
